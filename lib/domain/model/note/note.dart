@@ -10,15 +10,11 @@ class Note with _$Note {
     required String title,
     required String desc,
     required int color,
-    required int idx,
+    int? idx,
+    DateTime? createAt,
   }) = _Note;
 
   factory Note.fromJson(Map<String, dynamic> json) => _$NoteFromJson(json);
 
-  factory Note.empty() => const Note(
-        title: '',
-        desc: '',
-        color: 0,
-        idx: -1,
-      );
+  factory Note.empty() => const Note(title: '', desc: '', color: 0);
 }
