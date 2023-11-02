@@ -1,7 +1,7 @@
 import 'package:simple_note_clean_architecture/core/sqf_table.dart';
 import 'package:sqflite/sqflite.dart';
 
-class NoteTable implements SqfliteTable {
+class NoteDBHelper implements SqfliteTable {
   @override
   final String databasePath = "notes_db";
 
@@ -9,8 +9,11 @@ class NoteTable implements SqfliteTable {
   final int version = 1;
 
   @override
-  Future<Database> get database async {
-    return await openDatabase(
+  late final Database? db;
+
+  @override
+  Future<Database> initDatabase() async {
+    db ??= await openDatabase(
       databasePath,
       version: version,
       onCreate: (db, version) async {
@@ -18,5 +21,7 @@ class NoteTable implements SqfliteTable {
             'CREATE TABLE note (idx INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, desc TEXT, color INTEGER, createAt TEXT, updateAt TEXT)');
       },
     );
+
+    return db!;
   }
 }

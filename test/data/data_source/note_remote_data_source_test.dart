@@ -1,82 +1,61 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:simple_note_clean_architecture/data/data_source/note_remote_data_source.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 void main() {
-  test('db test', () async {
-    final db = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
+  late Database mockDb;
+  late NoteRemoteDataSource noteRemoteDataSource;
 
-    await db.execute(
+  const Note testNote = Note(title: 'test', desc: 'test', color: 1);
+
+  setUp(() async {
+    mockDb = await databaseFactoryFfi.openDatabase(inMemoryDatabasePath);
+    await mockDb.execute(
         'CREATE TABLE note (idx INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, desc TEXT, color INTEGER, createAt TEXT, updateAt TEXT)');
 
-    final noteRemoteDataSource = NoteRemoteDataSource(db: db);
-
-    await noteRemoteDataSource.insertNote(Note(
-      title: 'test',
-      desc: 'test',
-      color: 1,
-      createAt: DateTime.now().toLocal(),
-    ));
-
-    expect((await noteRemoteDataSource.getNotes()).length, 1);
-
-    Note note = (await noteRemoteDataSource.getNoteByIdx(1))!;
-    expect(note.idx, 1);
-
-    await noteRemoteDataSource.updateNote(note.copyWith(title: 'change'));
-
-    note = (await noteRemoteDataSource.getNoteByIdx(1))!;
-    expect(note.title, 'change');
-
-    await noteRemoteDataSource.deleteNote(note);
-    expect((await noteRemoteDataSource.getNotes()).length, 0);
-
-    await db.close();
+    noteRemoteDataSource = NoteRemoteDataSource(db: mockDb);
   });
-}
 
-class NoteRemoteDataSource {
-  final Database db;
+  group('note remote data source test', () {
+    test('insertNote test', () async {
+      final int idx = await noteRemoteDataSource.insertNote(testNote.copyWith(createAt: DateTime.now()));
+      expect(idx, isNot(0));
 
-  NoteRemoteDataSource({required this.db});
+      await mockDb.close();
+    });
 
-  Future<Note?> getNoteByIdx(int idx) async {
-    final List<Map<String, dynamic>> maps = await db.query(
-      'note',
-      where: 'idx = ?',
-      whereArgs: [idx],
-    );
+    test('getNoteByIdx test', () async {
+      final int idx = await noteRemoteDataSource.insertNote(testNote.copyWith(createAt: DateTime.now()));
+      final Note? targetNote = await noteRemoteDataSource.getNoteByIdx(idx);
+      expect(targetNote?.idx, idx);
 
-    if (maps.isNotEmpty) {
-      return Note.fromJson(maps.first);
-    }
+      final Note? targetNote2 = await noteRemoteDataSource.getNoteByIdx(2);
+      expect(targetNote2?.idx, isNull);
+      await mockDb.close();
+    });
 
-    return null;
-  }
+    test('updateNote test', () async {
+      final int idx = await noteRemoteDataSource.insertNote(testNote.copyWith(createAt: DateTime.now()));
+      final Note? targetNote = await noteRemoteDataSource.getNoteByIdx(idx);
 
-  Future<List<Note>> getNotes() async {
-    final maps = await db.query('note');
-    return maps.map((e) => Note.fromJson(e)).toList();
-  }
+      final Note expectNote = targetNote!.copyWith(title: 'change');
+      await noteRemoteDataSource.updateNote(expectNote);
+      final Note? updatedNote = await noteRemoteDataSource.getNoteByIdx(idx);
 
-  Future<void> insertNote(Note note) async {
-    await db.insert('note', note.toJson());
-  }
+      expect(updatedNote, expectNote);
 
-  Future<void> updateNote(Note note) async {
-    await db.update(
-      'note',
-      note.toJson(),
-      where: 'idx = ?',
-      whereArgs: [note.idx],
-    );
-  }
+      await mockDb.close();
+    });
 
-  Future<void> deleteNote(Note note) async {
-    await db.delete(
-      'note',
-      where: 'idx = ?',
-      whereArgs: [note.idx],
-    );
-  }
+    test('deleteNote test', () async {
+      final int targetIdx = await noteRemoteDataSource.insertNote(testNote.copyWith(createAt: DateTime.now()));
+      await noteRemoteDataSource.deleteNote(targetIdx);
+
+      final Note? deletedNote = await noteRemoteDataSource.getNoteByIdx(targetIdx);
+
+      expect(deletedNote, isNull);
+      await mockDb.close();
+    });
+  });
 }

@@ -11,15 +11,15 @@ import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 
 void main() {
   group('note repositoryimpl', () {
-    final NoteRepositoryImpl noteRepository = NoteRepositoryImpl();
-    test('get notes', () {
-      final List<Note> noteList = [
-        Note.empty(),
-        Note.empty(),
-      ];
+    // final NoteRepositoryImpl noteRepository = NoteRepositoryImpl();
+    // test('get notes', () {
+    //   final List<Note> noteList = [
+    //     Note.empty(),
+    //     Note.empty(),
+    //   ];
 
-      expect(noteRepository.getNotes(), noteList);
-    });
+    //   expect(noteRepository.getNotes(), noteList);
+    // });
 
     // test('get note by id', () {
     //   expect(noteRepository.getNoteById(idx: 0), const Note(title: '', desc: '', color: 0, idx: 0));

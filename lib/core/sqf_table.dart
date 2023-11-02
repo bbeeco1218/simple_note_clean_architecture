@@ -4,10 +4,11 @@ import 'package:sqflite/sqflite.dart';
 abstract class SqfliteTable {
   final String databasePath;
   final int version;
+  late final Database? db;
   SqfliteTable({
     required this.databasePath,
     required this.version,
   });
 
-  Future<Database> get database;
+  Future<Database> initDatabase();
 }
