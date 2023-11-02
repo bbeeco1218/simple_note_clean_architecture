@@ -15,12 +15,13 @@ void main() {
       await mockDb.execute(
           'CREATE TABLE note (idx INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, desc TEXT, color INTEGER, createAt TEXT, updateAt TEXT)');
 
-      noteRemoteDataSource = NoteRemoteDataSource(db: mockDb);
+      noteRemoteDataSource = NoteRemoteDataSourceImpl(db: mockDb);
     });
 
     tearDown(() async {
       await mockDb.close();
     });
+
     test('insertNote test', () async {
       final int idx = await noteRemoteDataSource.insertNote(testNote);
       expect(idx, isNot(0));
