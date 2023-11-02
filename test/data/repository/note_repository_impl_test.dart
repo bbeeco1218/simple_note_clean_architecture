@@ -31,6 +31,7 @@ void main() {
     tearDown(() async {
       await mockDb.close();
     });
+
     test('insertNote test', () async {
       final int idx = await noteRepository.insertNote(testNote);
       expect(idx, isNot(0));
