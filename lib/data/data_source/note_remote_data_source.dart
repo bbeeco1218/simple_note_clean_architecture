@@ -26,13 +26,15 @@ class NoteRemoteDataSource {
   }
 
   Future<int> insertNote(Note note) async {
-    return await db.insert('note', note.toJson());
+    final DateTime now = DateTime.now().toLocal();
+    return await db.insert('note', note.copyWith(createAt: now, updateAt: now).toJson());
   }
 
-  Future<void> updateNote(Note note) async {
-    await db.update(
+  Future<int> updateNote(Note note) async {
+    final DateTime now = DateTime.now().toLocal();
+    return await db.update(
       'note',
-      note.toJson(),
+      note.copyWith(updateAt: now).toJson(),
       where: 'idx = ?',
       whereArgs: [note.idx],
     );

@@ -12,6 +12,7 @@ class Note with _$Note {
     required int color,
     int? idx,
     DateTime? createAt,
+    DateTime? updateAt,
   }) = _Note;
 
   factory Note.fromJson(Map<String, dynamic> json) => _$NoteFromJson(json);

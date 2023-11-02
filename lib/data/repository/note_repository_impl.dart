@@ -1,24 +1,42 @@
+import 'package:simple_note_clean_architecture/data/data_source/note_remote_data_source.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:simple_note_clean_architecture/domain/repository/note_repository.dart';
 
 class NoteRepositoryImpl implements NoteRepository {
   @override
-  List<Note> getNotes() {
-    return [
-      Note.empty(),
-      Note.empty(),
-    ];
+  final NoteRemoteDataSource remoteDataSource;
+
+  NoteRepositoryImpl({required this.remoteDataSource});
+
+  @override
+  Future<List<Note>> getNotes() async {
+    return await remoteDataSource.getNotes();
   }
 
   @override
-  Note getNoteById({required int idx}) {
-    return const Note(title: '', desc: '', color: 0, idx: 0);
+  Future<Note?> getNoteByIdx({required int idx}) async {
+    return await remoteDataSource.getNoteByIdx(idx);
   }
 
   @override
-  bool insertNote(Note note) {
+  Future<int> insertNote(Note note) async {
     // if (!validateInsert(note)) return false;
-    return true;
+    return await remoteDataSource.insertNote(note);
+  }
+
+  @override
+  Future<bool> updateNote(Note note) async {
+    // if (!validateIdx(note.idx)) return false;
+    // if (!validateInsert(note)) return false;
+    final int numberOfChanges = await remoteDataSource.updateNote(note);
+    return numberOfChanges == 1;
+  }
+
+  @override
+  Future<bool> deleteNote(int idx) async {
+    // if (!validateIdx(noteIdx)) return false;
+    final int numberOfAffected = await remoteDataSource.deleteNote(idx);
+    return numberOfAffected == 1;
   }
 
   // @override
@@ -45,17 +63,4 @@ class NoteRepositoryImpl implements NoteRepository {
   //   if (noteIdx == -1) return false;
   //   return true;
   // }
-
-  @override
-  bool updateNote(Note note) {
-    // if (!validateIdx(note.idx)) return false;
-    // if (!validateInsert(note)) return false;
-    return true;
-  }
-
-  @override
-  bool deleteNote(int noteIdx) {
-    // if (!validateIdx(noteIdx)) return false;
-    return true;
-  }
 }
