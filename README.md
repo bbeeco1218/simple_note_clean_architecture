@@ -1,6 +1,11 @@
 # simple_note_clean_architecture
 
-A new Flutter project.
+클린 아키텍쳐를 이용한 간단한 노트앱
+- 클린아키텍쳐 적용
+- bloc 상태관리
+- freezed패키지
+- TDD
+- coverage/index.html 테스트 커버리지 확인
 
 ## Getting Started
 
