@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:simple_note_clean_architecture/core/theme/app_colors.dart';
 
 part 'note.freezed.dart';
 part 'note.g.dart';
@@ -17,5 +17,5 @@ class Note with _$Note {
 
   factory Note.fromJson(Map<String, dynamic> json) => _$NoteFromJson(json);
 
-  factory Note.empty() => const Note(title: '', desc: '', color: 0);
+  factory Note.empty() => Note(title: '', desc: '', color: AppColors.darkGray.value);
 }

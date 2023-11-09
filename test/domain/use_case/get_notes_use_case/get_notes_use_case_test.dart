@@ -13,7 +13,7 @@ void main() {
     late final GetNotesUseCase useCase;
     late final MockNoteRepository mockNoteRepository;
 
-    const Note testNote = Note(title: 'test', desc: 'test', color: 1);
+    Note testNote = Note.empty().copyWith(idx: 1, createAt: DateTime.now());
 
     setUpAll(() {
       mockNoteRepository = MockNoteRepository();
