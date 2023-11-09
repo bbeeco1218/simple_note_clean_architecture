@@ -6,10 +6,10 @@ abstract class NoteRepository {
   const NoteRepository({required this.remoteDataSource});
 
   Future<List<Note>> getNotes();
-  Future<Note?> getNoteByIdx({required int idx});
+  Future<Note> getNoteByIdx(int idx);
   Future<int> insertNote(Note note);
-  Future<bool> updateNote(Note note);
-  Future<bool> deleteNote(int noteIdx);
+  Future<void> updateNote(Note note);
+  Future<void> deleteNote(int noteIdx);
   // bool validateInsert(Note note);
   // bool validateTitle(String title);
   // bool validateDesc(String desc);

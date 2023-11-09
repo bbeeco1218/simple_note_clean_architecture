@@ -1,4 +1,5 @@
 import 'package:simple_note_clean_architecture/data/data_source/note_remote_data_source.dart';
+import 'package:simple_note_clean_architecture/data/repository/note_repository_failure.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:simple_note_clean_architecture/domain/repository/note_repository.dart';
 
@@ -14,24 +15,28 @@ class NoteRepositoryImpl implements NoteRepository {
   }
 
   @override
-  Future<Note?> getNoteByIdx({required int idx}) async {
-    return await remoteDataSource.getNoteByIdx(idx);
+  Future<Note> getNoteByIdx(int idx) async {
+    final Note? result = await remoteDataSource.getNoteByIdx(idx);
+    if (result == null) throw NoteRepositoryFailure();
+    return result;
   }
 
   @override
   Future<int> insertNote(Note note) async {
-    return await remoteDataSource.insertNote(note);
+    final int idx = await remoteDataSource.insertNote(note);
+    if (idx == 0) throw NoteRepositoryFailure();
+    return idx;
   }
 
   @override
-  Future<bool> updateNote(Note note) async {
+  Future<void> updateNote(Note note) async {
     final int numberOfChanges = await remoteDataSource.updateNote(note);
-    return numberOfChanges == 1;
+    if (numberOfChanges == 0) throw NoteRepositoryFailure();
   }
 
   @override
-  Future<bool> deleteNote(int idx) async {
+  Future<void> deleteNote(int idx) async {
     final int numberOfAffected = await remoteDataSource.deleteNote(idx);
-    return numberOfAffected == 1;
+    if (numberOfAffected == 0) throw NoteRepositoryFailure();
   }
 }
