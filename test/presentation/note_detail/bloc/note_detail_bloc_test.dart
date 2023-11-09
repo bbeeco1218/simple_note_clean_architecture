@@ -6,7 +6,6 @@ import 'package:simple_note_clean_architecture/core/theme/app_colors.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:simple_note_clean_architecture/domain/use_case/update_note_use_case.dart';
 import 'package:simple_note_clean_architecture/presentation/note_detail/bloc/note_detail_bloc.dart';
-import 'package:simple_note_clean_architecture/presentation/note_home/bloc/note_home_bloc.dart';
 
 import 'note_detail_bloc_test.mocks.dart';
 
