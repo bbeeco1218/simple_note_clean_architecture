@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:injectable/injectable.dart';
 
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:simple_note_clean_architecture/domain/use_case/update_note_use_case.dart';
@@ -17,6 +18,7 @@ typedef NoteDetailEmitter = Emitter<NoteDetailState>;
 const String emptyTitleMessage = '제목을 입력해 주세요.';
 const String emptyDescMessage = '내용을 입력해 주세요.';
 
+@injectable
 class NoteDetailBloc extends Bloc<NoteDetailEvent, NoteDetailState> {
   NoteDetailBloc({
     required this.updateNote,

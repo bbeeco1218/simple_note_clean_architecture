@@ -1,8 +1,10 @@
 import 'package:equatable/equatable.dart';
+import 'package:injectable/injectable.dart';
 import 'package:simple_note_clean_architecture/core/use_case/use_case.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:simple_note_clean_architecture/domain/repository/note_repository.dart';
 
+@Singleton(as: UseCase)
 class GetNoteUseCase implements UseCase<Note, GetNoteParams> {
   final NoteRepository noteRepository;
   GetNoteUseCase({required this.noteRepository});

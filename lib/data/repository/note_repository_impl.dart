@@ -1,8 +1,10 @@
+import 'package:injectable/injectable.dart';
 import 'package:simple_note_clean_architecture/data/data_source/note_remote_data_source.dart';
 import 'package:simple_note_clean_architecture/data/repository/note_repository_failure.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:simple_note_clean_architecture/domain/repository/note_repository.dart';
 
+@Singleton(as: NoteRepository)
 class NoteRepositoryImpl implements NoteRepository {
   @override
   final NoteRemoteDataSource remoteDataSource;

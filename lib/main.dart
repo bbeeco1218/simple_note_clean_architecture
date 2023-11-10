@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:simple_note_clean_architecture/di/di_setup.dart';
 import 'package:simple_note_clean_architecture/presentation/note_home/screen/note_home_screen.dart';
 
 void main() {
+  configureDependencies();
   runApp(const MyApp());
 }
 

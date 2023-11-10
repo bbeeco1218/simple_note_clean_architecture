@@ -1,3 +1,4 @@
+import 'package:injectable/injectable.dart';
 import 'package:simple_note_clean_architecture/domain/model/note/note.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -9,6 +10,7 @@ abstract class NoteRemoteDataSource {
   Future<int> deleteNote(int idx);
 }
 
+@Singleton(as: NoteRemoteDataSource)
 class NoteRemoteDataSourceImpl implements NoteRemoteDataSource {
   final Database db;
 
